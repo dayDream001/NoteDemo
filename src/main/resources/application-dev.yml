@@ -1,0 +1,40 @@
+server:
+  port: 8888
+  servlet:
+    encoding:
+      charset: UTF-8
+
+
+
+spring:
+  datasource:
+    username: newxdtm
+    password: 123qwe
+    url: jdbc:oracle:thin:@127.0.0.1:1521/orcl
+    diver-class-name: oracle.jdbc.driver.OracleDriver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapping.xml
+  type-aliases-package: com.example.demo.mapper
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        demo:
+          mapper: debug
+jwt:
+  config:
+    key: userlogin
+    failureTime: 3600000
+
+
+
+

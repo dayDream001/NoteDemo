@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PersonMapper">
+    <resultMap id="PersonBaseMap" type="com.example.demo.entity.Person">
+        <result column="PERSON_ID" jdbcType="VARCHAR" property="personId" />
+        <result column="PERSON_NAME" jdbcType="VARCHAR" property="personName" />
+        <result column="PERSON_ROLE" jdbcType="VARCHAR" property="personRole" />
+        <result column="PERSON_SEX" jdbcType="VARCHAR" property="personSex" />
+        <result column="PERSON_AGE" jdbcType="VARCHAR" property="personAge" />
+        <result column="PERSON_RACE" jdbcType="VARCHAR" property="personRace" />
+        <result column="PERSON_JOB" jdbcType="VARCHAR" property="personJob" />
+        <result column="PERSON_TRAM" jdbcType="VARCHAR" property="personTeam" />
+        <result column="PERSON_LOOK" jdbcType="VARCHAR" property="personLook" />
+        <result column="PERSON_SOCIETY" jdbcType="VARCHAR" property="personSociety" />
+        <result column="PERSON_FAMILY" jdbcType="VARCHAR" property="personFamily" />
+        <result column="PERSON_EVEN" jdbcType="VARCHAR" property="personEven" />
+        <result column="PERSON_ABILITY" jdbcType="VARCHAR" property="personAbility" />
+        <result column="PERSON_DISPOSITION" jdbcType="VARCHAR" property="personDisposition" />
+        <result column="PERSON_LEV" jdbcType="VARCHAR" property="personLev" />
+    </resultMap>
+
+
+    <insert id="insertPerson" parameterType="com.example.demo.entity.Person">
+        INSERT INTO PERSON_BASE (
+        PERSON_ID,
+        PERSON_NAME,
+        PERSON_ROLE,
+        PERSON_SEX,
+        PERSON_AGE,
+        PERSON_RACE,
+        PERSON_JOB,
+        PERSON_TRAM,
+        PERSON_LOOK,
+        PERSON_SOCIETY,
+        PERSON_FAMILY,
+        PERSON_EVEN,
+        PERSON_ABILITY,
+        PERSON_DISPOSITION,
+        PERSON_LEV
+        )VALUES (
+        PERSON_BASE_SEQ.NEXTVAL,
+        #{personName},
+        #{personRole},
+        #{personSex},
+        #{personAge},
+        #{personRace},
+        #{personJob},
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        #{personAbility},
+        #{personDisposition},
+        #{personLev}
+
+        )
+    </insert>
+
+    <insert id="insertPersonByEven" parameterType="com.example.demo.entity.Person">
+        INSERT INTO PERSON_BASE (
+        PERSON_ID,
+        PERSON_NAME,
+        PERSON_TRAM,
+        PERSON_LOOK,
+        PERSON_SOCIETY,
+        PERSON_FAMILY,
+        PERSON_EVEN
+        )VALUES (
+        PERSON_BASE_SEQ.NEXTVAL,
+        #{personName},
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL,
+        PERSON_BASE_SEQ.CURRVAL
+        )
+    </insert>
+
+    <delete id="deleteById">
+        delete  from PERSON_BASE  where person_id =#{personId}
+    </delete>
+
+    <update id="updateById" parameterType="com.example.demo.entity.Person">
+        update  PERSON_BASE set
+        PERSON_NAME = #{personName},
+        PERSON_ROLE = #{personRole},
+        PERSON_SEX = #{personSex},
+        PERSON_AGE = #{personAge},
+        PERSON_RACE = #{personRace},
+        PERSON_JOB = #{personJob},
+        PERSON_TRAM = #{personTeam},
+        PERSON_LOOK = #{personLook},
+        PERSON_SOCIETY = #{personSociety},
+        PERSON_FAMILY = #{personFamily},
+        PERSON_EVEN = #{personEven},
+        PERSON_ABILITY = #{personAbility},
+        PERSON_DISPOSITION = #{personDisposition},
+        PERSON_LEV = #{personLev}
+        where  PERSON_ID =#{personId}
+    </update>
+
+    <select id="getByName" resultMap="PersonBaseMap" parameterType="String">
+        select * from  PERSON_BASE WHERE PERSON_NAME like '%'|| #{personName}||'%'
+    </select>
+
+    <select id="getIdByName" resultType="String" parameterType="String">
+        select PERSON_ID from  PERSON_BASE WHERE PERSON_NAME = #{personName}
+    </select>
+
+    <select id="getPages" resultType="Integer">
+        select count(*) from  PERSON_BASE
+    </select>
+    <!--分页beg-->
+    <select id="findByPage" resultMap="PersonBaseMap" parameterType="Integer">
+       SELECT *
+        FROM (SELECT ROW_.*, ROWNUM ROWNUM_
+        FROM (SELECT *
+        FROM PERSON_BASE
+        ORDER BY PERSON_ID DESC) ROW_
+        WHERE ROWNUM &lt; = 7*#{page})
+        WHERE ROWNUM_ &gt; (#{page}-1)*7
+    </select>
+    <select id="count" resultType="Integer" >
+        SELECT COUNT(*) from PERSON_BASE
+    </select>
+    <!--分页end-->
+
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ParmDicMapper">
+    <resultMap id="ParmDicMap" type="com.example.demo.entity.ParmDic">
+        <result column="KEY_NAME" jdbcType="VARCHAR" property="keyName"/>
+        <result column="OPT_CODE" jdbcType="VARCHAR" property="optCode"/>
+        <result column="OPT_NAME" jdbcType="VARCHAR" property="optName"/>
+        <result column="SEQN" jdbcType="INTEGER" property="seqn"/>
+        <result column="STS" jdbcType="VARCHAR" property="STS"/>
+    </resultMap>
+
+    <select id="getOptName" resultType="String" parameterType="String">
+        SELECT OPT_NAME FROM PARM_DIC WHERE KEY_NAME=#{keyName}  AND STS ='1'  ORDER BY SEQN
+    </select>
+
+
+</mapper>

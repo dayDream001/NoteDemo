@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EvenMapper">
+    <resultMap id="EvenBaseMap" type="com.example.demo.entity.Even">
+        <result column="EVEN_ID" jdbcType="VARCHAR" property="evenId" />
+        <result column="REL_NO" jdbcType="VARCHAR" property="relNo" />
+        <result column="EVEN_NAME" jdbcType="VARCHAR" property="evenName" />
+        <result column="EVEN_TIME" jdbcType="VARCHAR" property="evenTime" />
+        <result column="EVEN_ADDR" jdbcType="VARCHAR" property="evenAddr" />
+        <result column="EVEN_PERSON1" jdbcType="VARCHAR" property="evenPerson1" />
+        <result column="EVEN_PERSON2" jdbcType="VARCHAR" property="evenPerson2" />
+        <result column="EVEN_PERSON3" jdbcType="VARCHAR" property="evenPerson3" />
+        <result column="EVEN_PERSON4" jdbcType="VARCHAR" property="evenPerson4" />
+        <result column="EVEN_PERSON5" jdbcType="VARCHAR" property="evenPerson5" />
+        <result column="EVEN_PERSON6" jdbcType="VARCHAR" property="evenPerson6" />
+        <result column="EVEN_PERSON7" jdbcType="VARCHAR" property="evenPerson7" />
+        <result column="EVEN_BEG" jdbcType="VARCHAR" property="evenBeg" />
+        <result column="EVEN_MIN" jdbcType="VARCHAR" property="evenMin" />
+        <result column="EVEN_END" jdbcType="VARCHAR" property="evenEnd" />
+        <result column="EVEN_SUM" jdbcType="VARCHAR" property="evenSum" />
+
+    </resultMap>
+
+
+    <insert id="insertEven" parameterType="com.example.demo.entity.Even">
+        INSERT INTO EVEN_BASE (
+        EVEN_ID,
+        REL_NO,
+        EVEN_NAME,
+        EVEN_TIME,
+        EVEN_ADDR,
+        EVEN_PERSON1,
+        EVEN_PERSON2,
+        EVEN_PERSON3,
+        EVEN_PERSON4,
+        EVEN_PERSON5,
+        EVEN_PERSON6,
+        EVEN_PERSON7,
+        EVEN_BEG,
+        EVEN_MIN,
+        EVEN_END,
+        EVEN_SUM
+        )VALUES (
+        EVEN_BASE_SEQ.NEXTVAL,
+        #{relNo},
+        #{evenName},
+        #{evenTime},
+        #{evenAddr},
+        #{evenPerson1},
+        #{evenPerson2},
+        #{evenPerson3},
+        #{evenPerson4},
+        #{evenPerson5},
+        #{evenPerson6},
+        #{evenPerson7},
+        #{evenBeg},
+        #{evenMin},
+        #{evenEnd},
+        #{evenSum}
+        )
+    </insert>
+
+    <delete id="deleteById">
+        delete  from EVEN_BASE  where even_id =#{evenId}
+    </delete>
+
+    <update id="updateById" parameterType="com.example.demo.entity.Even">
+        update  EVEN_BASE set
+        REL_NO = #{relNo},
+        EVEN_NAME = #{evenName},
+        EVEN_TIME = #{evenTime},
+        EVEN_ADDR = #{evenAddr},
+        EVEN_PERSON1 = #{evenPerson1},
+        EVEN_PERSON2 = #{evenPerson2},
+        EVEN_PERSON3 = #{evenPerson3},
+        EVEN_PERSON4 = #{evenPerson4},
+        EVEN_PERSON5 = #{evenPerson5},
+        EVEN_PERSON6 = #{evenPerson7},
+        EVEN_PERSON7 = #{evenPerson7},
+        EVEN_BEG     = #{evenBeg},
+        EVEN_MIN     = #{evenMin},
+        EVEN_END     = #{evenEnd},
+        EVEN_SUM     = #{evenSum}
+        where  EVEN_ID =#{evenId}
+    </update>
+
+    <select id="getByName" resultMap="EvenBaseMap" parameterType="String">
+        select * from  EVEN_BASE WHERE EVEN_NAME like '%'|| #{evenName}||'%'
+    </select>
+
+    <select id="getPages" resultType="Integer">
+        select count(*) from  EVEN_BASE
+    </select>
+    <!--分页beg-->
+    <select id="findByPage" resultMap="EvenBaseMap" parameterType="com.example.demo.entity.Even">
+       SELECT *
+        FROM (SELECT ROW_.*, ROWNUM ROWNUM_
+        FROM (SELECT *
+        FROM EVEN_BASE WHERE REL_NO  like '%'||#{relNo}||'%'
+        ORDER BY EVEN_ID DESC) ROW_
+        WHERE ROWNUM &lt; = 7*#{page})
+        WHERE ROWNUM_ &gt; (#{page}-1)*7
+    </select>
+    <select id="count" resultType="Integer" >
+        SELECT COUNT(*) from EVEN_BASE
+    </select>
+    <!--分页end-->
+
+
+</mapper>
